@@ -140,37 +140,56 @@ if len(numeric_cols) > 0:
 # ---------------------------------------------------
 # MACHINE LEARNING
 # ---------------------------------------------------
+# ---------------------------------------------------
+# MACHINE LEARNING
+# ---------------------------------------------------
 if target_col is not None:
 
     st.subheader("🤖 Logistic Regression Model")
 
     ml_df = df.copy()
 
-    le = LabelEncoder()
-
+    # Remove ID columns if present
     for col in ml_df.columns:
-        if ml_df[col].dtype == "object":
-            ml_df[col] = le.fit_transform(ml_df[col].astype(str))
+        if "id" in col.lower():
+            ml_df.drop(col, axis=1, inplace=True)
 
-    X = ml_df.drop(target_col, axis=1)
-    y = ml_df[target_col]
+    # Handle missing values
+    ml_df = ml_df.fillna(0)
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X,
-        y,
-        test_size=0.2,
-        random_state=42
-    )
+    # Convert categorical columns
+    ml_df = pd.get_dummies(ml_df, drop_first=True)
 
-    model = LogisticRegression(max_iter=1000)
+    # Target column handling
+    target_columns = [col for col in ml_df.columns if "churn" in col.lower()]
 
-    model.fit(X_train, y_train)
+    if len(target_columns) > 0:
 
-    pred = model.predict(X_test)
+        target = target_columns[0]
 
-    accuracy = accuracy_score(y_test, pred)
+        X = ml_df.drop(target, axis=1)
+        y = ml_df[target]
 
-    st.success(f"✅ Model Accuracy : {round(accuracy*100,2)}%")
+        # Convert everything to numeric
+        X = X.astype(float)
+        y = y.astype(int)
+
+        X_train, X_test, y_train, y_test = train_test_split(
+            X,
+            y,
+            test_size=0.2,
+            random_state=42
+        )
+
+        model = LogisticRegression(max_iter=2000)
+
+        model.fit(X_train, y_train)
+
+        pred = model.predict(X_test)
+
+        accuracy = accuracy_score(y_test, pred)
+
+        st.success(f"✅ Model Accuracy : {round(accuracy*100,2)}%")
 
 # ---------------------------------------------------
 # DATAFRAME
