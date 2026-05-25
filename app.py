@@ -63,6 +63,8 @@ st.markdown("""
 st.markdown("<div class='big-title'>📈 Customer Churn Prediction</div>", unsafe_allow_html=True)
 
 st.markdown("<div class='subtitle'>Deploy Ready Machine Learning Dashboard using Streamlit</div>", unsafe_allow_html=True)
+st.markdown("<div class='subtitle'>Deploy Ready Machine Learning Dashboard using Streamlit</div>", unsafe_allow_html=True)
+st.markdown("<div class='subtitle'>Deploy Ready Machine Learning Dashboard using Streamlit</div>", unsafe_allow_html=True)
 
 # ---------------------------------------------------
 # LOAD DATA
